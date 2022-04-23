@@ -38,8 +38,8 @@
                 </select>
             </label>
             <div class="buttons">
+                <a href="index.php" class="btn btn-success">Back</a>
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <a href="index.php" class="btn btn-success">Log in</a>
             </div>
         </form>
     </div>

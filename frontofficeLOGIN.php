@@ -24,7 +24,7 @@
 </head>
 <body>
 <div class="container">
-    <form action="Users/FRONT%20OFFICE/FrontOffice.php" method="post">
+    <form action="#" method="post">
         <div class="col-md-6 container">
             <h4>Front Office</h4>
             <p>Admin Log in</p>
@@ -46,32 +46,30 @@
 </html>
 
 <?php
+include("config.php");
 session_start();
 
-if(isset($_POST['submit'])){
-    include 'db_connect.php';
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+    // username and password sent from form
 
     $email = mysqli_real_escape_string($db,$_POST['email']);
     $password = mysqli_real_escape_string($db,$_POST['password']);
-    $department = mysqli_real_escape_string($db,$_POST['department']);
 
-    $qry=mysqli_query($db,"SELECT * FROM log_in WHERE email='$email' AND password='$password' AND department='$department'");
-    $row = mysqli_fetch_array($qry,MYSQLI_ASSOC);
-    $active = $row['active'];
+    $sql = "SELECT email FROM log_in WHERE email = '$email' and password = '$password'";
+    $result = mysqli_query($db,$sql);
+    $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+//    $active = $row['active'];
 
-    $count = mysqli_num_rows($qry);
+    $count = mysqli_num_rows($result);
 
-    // If result matched $username,$password and $department, table row must be 1 row
+    // If result matched $myusername and $mypassword, table row must be 1 row
 
     if($count == 1) {
+        $_SESSION['login_user'] = $email;
 
-        if (!empty($email) && !empty($password) && !empty($department=='Front Office')){
-            header("LOCATION:Users/FRONT%20OFFICE/FrontOffice.php");
-        }
-
-    }else
-    {
-        header("LOCATION:login_error.php");
+        header("location: Users/FRONT%20OFFICE/FrontOffice.php");
+    }else {
+        $error = "Your Login Name or Password is invalid";
     }
 }
 ?>
